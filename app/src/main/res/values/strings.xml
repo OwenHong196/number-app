@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="score">Score:</string>
+    <string name="strikes">Strikes:</string>
+    <string name="start">START</string>
+    <string name="tap_start_to_begin">Tap start to begin!</string>
+    <string name="restart">RESTART</string>
+    <string name="tap_larger">Tap the larger number!</string>
+    <string name="tap_restart">Tap restart to play again!</string>
+</resources>
