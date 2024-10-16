@@ -3,6 +3,7 @@ package com.example.number_app
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var box2: Button
     private lateinit var start: Button
     private lateinit var layout: LinearLayout
+    private lateinit var ishardmode: CheckBox
     private var score = 0
     private var error = 0
 
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         start = findViewById(R.id.start)
         guide = findViewById(R.id.guide)
         layout = findViewById(R.id.main)
+        ishardmode = findViewById(R.id.hardmode)
         play()
     }
     private fun play(){
@@ -41,14 +44,14 @@ class MainActivity : AppCompatActivity() {
             start.setOnClickListener {
                 restart()
             }
-            var result = setRandomNum()
+            var result = setRandomNum(ischecked(ishardmode))
             box1.setOnClickListener {
                 result(result,box1)
                 updateText()
                 if (checkGameEnd()){
                     gameEnd()
                 }else {
-                    result = setRandomNum()
+                    result = setRandomNum(ischecked(ishardmode))
                 }
             }
             box2.setOnClickListener {
@@ -57,8 +60,11 @@ class MainActivity : AppCompatActivity() {
                 if (checkGameEnd()){
                     gameEnd()
                 }else {
-                    result = setRandomNum()
+                    result = setRandomNum(ischecked(ishardmode))
                 }
+            }
+            ishardmode.setOnClickListener{
+                result = setRandomNum(ischecked(ishardmode))
             }
         }
     }
@@ -74,14 +80,14 @@ class MainActivity : AppCompatActivity() {
         start.setOnClickListener {
             restart()
         }
-        var result = setRandomNum()
+        var result = setRandomNum(ischecked(ishardmode))
         box1.setOnClickListener {
             result(result,box1)
             updateText()
             if (checkGameEnd()){
                 gameEnd()
             }else{
-                result = setRandomNum()
+                result = setRandomNum(ischecked(ishardmode))
             }
         }
         box2.setOnClickListener {
@@ -90,18 +96,29 @@ class MainActivity : AppCompatActivity() {
             if (checkGameEnd()){
                 gameEnd()
             }else {
-                result = setRandomNum()
+                result = setRandomNum(ischecked(ishardmode))
             }
+
+        }
+        ishardmode.setOnClickListener{
+            result = setRandomNum(ischecked(ishardmode))
         }
     }
-    private fun setRandomNum(): TextView{
-        var num1 = Random.nextInt(1,100)
-        var num2 = Random.nextInt(1,100)
+    private fun setRandomNum(hardmode: Boolean): TextView{
+        var num1 = 0
+        var num2 = 0
+        if (hardmode){
+            num1 = Random.nextInt(1, 1000)
+            num2 = Random.nextInt(1, 1000)
+        }else{
+            num1 = Random.nextInt(1, 100)
+            num2 = Random.nextInt(1, 100)
+        }
         if (num1 != num2) {
             box1.text = "$num1"
             box2.text = "$num2"
         }else{
-            setRandomNum()
+            setRandomNum(ischecked(ishardmode))
         }
         if (num1 > num2){
             return box1
@@ -152,5 +169,15 @@ class MainActivity : AppCompatActivity() {
             scoreText.setTextColor(Color.BLACK)
             errorText.setTextColor(Color.YELLOW)
         }
+    }
+    private fun ischecked(hardmode: CheckBox): Boolean{
+        if (hardmode.isChecked){
+            box1.setTextSize(48F)
+            box2.setTextSize(48F)
+        }else{
+            box1.setTextSize(64F)
+            box2.setTextSize(64F)
+        }
+        return hardmode.isChecked
     }
 }
